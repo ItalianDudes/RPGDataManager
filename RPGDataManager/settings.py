@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 try:
     import projectvars
 except ImportError:
-    raise ImportError('Missing projectvars in .venv directory!')
+    raise ImportError('Missing projectvars.py file in .venv directory!')
 
 from pathlib import Path
 
