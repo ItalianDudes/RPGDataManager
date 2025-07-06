@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="it">
+    <head>
+        <meta charset="UTF-8"/>
+        <link rel="shortcut icon" type="image/png" href="{% static 'dnd5e/favicon.ico' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'dnd5e/style.css' %}"/>
+        <title>D&D5E Items</title>
+    </head>
+    <body>
+        <form method="get">
+            {{  form.as_p }}
+            <button type="submit">CERCA</button>
+        </form>
+        {% if items %}
+            <table class="items_table">
+                <thead>
+                    <tr>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Rarità</th>
+                        <th>Peso (KG)</th>
+                        <th>Costo (MR)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>{{ item.item_id }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.rarity }}</td>
+                            <td>{{ item.weight }}</td>
+                            <td>{{ item.cost_copper }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nessun oggetto trovato.</p>
+        {% endif %}
+    </body>
+</html>
