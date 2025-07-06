@@ -8,12 +8,16 @@
         <title>D&D5E Items</title>
     </head>
     <body>
-        <form method="get">
-            {{  form.as_p }}
+        <form method="post" class="items-form">
+            {{  form.name }}
+            {{  form.category }}
+            {{  form.equipment_type }}
+            {% csrf_token %}
             <button type="submit">CERCA</button>
         </form>
+        <br/>
         {% if items %}
-            <table class="items_table">
+            <table>
                 <thead>
                     <tr>
                         <th>#ID</th>
@@ -26,11 +30,11 @@
                 <tbody>
                     {% for item in items %}
                         <tr>
-                            <td>{{ item.item_id }}</td>
-                            <td>{{ item.name }}</td>
+                            <td><a href="/dnd5e/items/{{ item.item_id }}">{{ item.item_id }}</a></td>
+                            <td style="text-align: left; width: 100%;">{{ item.name }}</td>
                             <td>{{ item.rarity }}</td>
-                            <td>{{ item.weight }}</td>
-                            <td>{{ item.cost_copper }}</td>
+                            <td>{{ item.weight }}Kg</td>
+                            <td>{{ item.cost_copper }}MR</td>
                         </tr>
                     {% endfor %}
                 </tbody>

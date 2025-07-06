@@ -21,18 +21,28 @@ class Rarity(StrEnum):
         return tuple((i.value, i.value) for i in cls)
 
 class ItemCategory(StrEnum):
+    _PLACEHOLDER = "Categoria"
     ITEM = "Oggetto"
     EQUIPMENT = "Equipaggiamento"
     SPELL = "Incantesimo"
+
+    @classmethod
+    def get_placeholder(cls):
+        return cls._PLACEHOLDER
 
     @classmethod
     def choices(cls):
         return tuple((i.value, i.value) for i in cls)
 
 class EquipmentType(StrEnum):
+    _PLACEHOLDER = "Tipo Equipaggiamento"
     ARMOR = "Armatura"
     WEAPON = "Arma"
     ADDON = "Addon"
+
+    @classmethod
+    def get_placeholder(cls):
+        return cls._PLACEHOLDER
 
     @classmethod
     def choices(cls):

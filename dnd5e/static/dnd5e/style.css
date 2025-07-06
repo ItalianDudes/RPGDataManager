@@ -1,0 +1,14 @@
+/* PROPERTIES OVERRIDE */
+table, th, td {
+    border: 1px solid;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+    padding: 5px;
+}
+
+/* CLASS DEFINITIONS */
+.items-form {
+    display: flex;
+    gap: 0.3rem;
+}

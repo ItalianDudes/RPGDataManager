@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 
-from dnd5e.enums import ItemCategory
+from dnd5e.enums import ItemCategory, EquipmentType
 from dnd5e.forms import ItemsForm
 from dnd5e.models import Item
 
@@ -10,21 +10,26 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, 'dnd5e/index.html')
 
 def items(request: HttpRequest) -> HttpResponse:
-    form = ItemsForm(request.GET)
+    form = ItemsForm(request.POST)
     items_list = Item.objects.all().filter(visible=True)
 
     if form.is_valid():
         name = form.cleaned_data.get('name')
-        item_category = form.cleaned_data.get('item_category')
+        print(name)
+        category = form.cleaned_data.get('category')
+        print(category)
         equipment_type = form.cleaned_data.get('equipment_type')
+        print(equipment_type)
 
         if name:
             items_list = items_list.filter(name__contains=name)
-        if item_category:
-            items_list = items_list.filter(item_category=item_category)
-        if item_category == ItemCategory.EQUIPMENT and equipment_type:
+        if category and category != ItemCategory.get_placeholder():
+            items_list = items_list.filter(category=category)
+        if category == ItemCategory.EQUIPMENT and equipment_type and equipment_type != EquipmentType.get_placeholder():
             items_list = items_list.filter(equipment_type=equipment_type)
 
-    print(items_list.count())
-
     return render(request, 'dnd5e/items.html', {'form': form, 'items': items_list})
+
+def item(request: HttpRequest, item_id: int) -> HttpResponse:
+    selected_item = Item.objects.filter(item_id=item_id).first()
+    return render(request, 'dnd5e/item.html', {'item': selected_item})
