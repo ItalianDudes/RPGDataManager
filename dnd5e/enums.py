@@ -1,3 +1,5 @@
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from django.db.models.enums import StrEnum
 
 
@@ -17,6 +19,14 @@ class Rarity(StrEnum):
     EXOTIC = "Esotico"
 
     @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not a Rarity"),
+                params={"value": value},
+            )
+
+    @classmethod
     def choices(cls):
         return tuple((i.value, i.value) for i in cls)
 
@@ -25,6 +35,14 @@ class ItemCategory(StrEnum):
     ITEM = "Oggetto"
     EQUIPMENT = "Equipaggiamento"
     SPELL = "Incantesimo"
+
+    @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not a ItemCategory"),
+                params={"value": value},
+            )
 
     @classmethod
     def get_placeholder(cls):
@@ -39,6 +57,14 @@ class EquipmentType(StrEnum):
     ARMOR = "Armatura"
     WEAPON = "Arma"
     ADDON = "Addon"
+
+    @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not an EquipmentType"),
+                params={"value": value},
+            )
 
     @classmethod
     def get_placeholder(cls):
@@ -70,6 +96,14 @@ class ArmorSlot(StrEnum):
     RIGHT_FOOT = "Piede DX"
 
     @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not an ArmorSlot"),
+                params={"value": value},
+            )
+
+    @classmethod
     def choices(cls):
         return tuple((i.value, i.value) for i in cls)
 
@@ -77,6 +111,14 @@ class ArmorWeightCategory(StrEnum):
     LIGHT = "Leggero (+Mod Destrezza)"
     MEDIUM = "Medio (+Mod Destrezza MAX 2)"
     HEAVY = "Pesante (Nessun Modificatore)"
+
+    @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not an ArmorWeightCategory"),
+                params={"value": value},
+            )
 
     @classmethod
     def choices(cls):
@@ -91,6 +133,14 @@ class AddonSlot(StrEnum):
     BACKPACK = "Zaino"
     BELT = "Cintura"
     BANDOLIER = "Bandoliera"
+
+    @classmethod
+    def validate(cls, value):
+        if value not in cls:
+            raise ValidationError(
+                _("%(value)s is not an AddonSlot"),
+                params={"value": value},
+            )
 
     @classmethod
     def choices(cls):

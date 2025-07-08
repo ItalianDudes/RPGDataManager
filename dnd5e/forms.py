@@ -10,10 +10,12 @@ class ItemsForm(forms.Form):
     category = forms.ChoiceField(
         required=False,
         choices=ItemCategory.choices(),
-        label=""
+        label="",
+        validators=[ItemCategory.validate]
     )
     equipment_type = forms.ChoiceField(
         required=False,
         choices=EquipmentType.choices(),
-        label=""
+        label="",
+        validators=[EquipmentType.validate]
     )
