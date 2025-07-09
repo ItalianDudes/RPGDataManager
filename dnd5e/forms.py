@@ -9,13 +9,13 @@ class ItemsForm(forms.Form):
     }))
     category = forms.ChoiceField(
         required=False,
-        choices=ItemCategory.choices(),
+        choices=ItemCategory.choices_as_tuple(),
         label="",
         validators=[ItemCategory.validate]
     )
     equipment_type = forms.ChoiceField(
         required=False,
-        choices=EquipmentType.choices(),
+        choices=EquipmentType.choices_as_tuple(),
         label="",
         validators=[EquipmentType.validate]
     )

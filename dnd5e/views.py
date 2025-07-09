@@ -13,19 +13,25 @@ def items(request: HttpRequest) -> HttpResponse:
     form = ItemsForm(request.POST)
     items_list = Item.objects.all().filter(visible=True)
 
+    # FUNZIONA, PARTI DA QUI!!
+    print(ItemCategory.choices)
+    print(ItemCategory.values)
+    print(ItemCategory.names)
+    print(ItemCategory.labels)
+
     if form.is_valid():
         name = form.cleaned_data.get('name')
         category = form.cleaned_data.get('category')
         equipment_type = form.cleaned_data.get('equipment_type')
 
         print(f"CATEGORY: {category}")
-        print(f"CATEGORY CHOICES: {ItemCategory.choices()}")
+        print(f"CATEGORY CHOICES: {ItemCategory.choices}")
 
         if name:
             items_list = items_list.filter(name__contains=name)
-        if category and category in ItemCategory.choices() and category != ItemCategory.get_placeholder():
+        if category and category in ItemCategory.choices and category != ItemCategory.get_placeholder():
             items_list = items_list.filter(category=category)
-            if category == ItemCategory.EQUIPMENT and equipment_type and equipment_type in EquipmentType.choices() and equipment_type != EquipmentType.get_placeholder():
+            if category == ItemCategory.EQUIPMENT and equipment_type and equipment_type in EquipmentType.choices and equipment_type != EquipmentType.get_placeholder():
                 items_list = items_list.filter(equipment_type=equipment_type)
 
     return render(request, 'dnd5e/items.html', {'form': form, 'items': items_list})

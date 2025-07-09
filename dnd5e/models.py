@@ -10,8 +10,8 @@ class Item(models.Model):
     base64_image = models.TextField(null=True, blank=True)
     image_extension = models.TextField(null=True, blank=True)
     name = models.CharField(max_length=256, null=False, blank=False, unique=True)
-    category = models.CharField(choices=ItemCategory.choices(), validators=[ItemCategory.validate])
-    rarity = models.CharField(choices=Rarity.choices(), default=Rarity.COMMON, validators=[Rarity.validate])
+    category = models.CharField(choices=ItemCategory.clean_choices_as_tuple(), validators=[ItemCategory.validate])
+    rarity = models.CharField(choices=Rarity.choices_as_tuple(), default=Rarity.COMMON, validators=[Rarity.validate])
     weight = models.FloatField(default=0, null=False, blank=False)
     cost_copper = models.IntegerField(default=0, null=False, blank=False)
     description = models.TextField(null=False, blank=True)
@@ -25,7 +25,7 @@ class Item(models.Model):
 
 class Equipment(Item):
     equipment_id = models.IntegerField(primary_key=True)
-    type = models.CharField(choices=EquipmentType.choices(), validators=[EquipmentType.validate])
+    type = models.CharField(choices=EquipmentType.clean_choices_as_tuple(), validators=[EquipmentType.validate])
     ca_effect = models.IntegerField(null=False, blank=False, default=0)
     life_effect = models.IntegerField(null=False, blank=False, default=0)
     life_effect_perc = models.FloatField(null=False, blank=False, default=0)
@@ -39,8 +39,8 @@ class Equipment(Item):
 
 class Armor(Equipment):
     armor_id = models.IntegerField(primary_key=True)
-    armor_slot = models.CharField(choices=ArmorSlot.choices(), validators=[ArmorSlot.validate])
-    weight_category = models.CharField(choices=ArmorWeightCategory.choices(), validators=[ArmorWeightCategory.validate])
+    armor_slot = models.CharField(choices=ArmorSlot.choices_as_tuple(), validators=[ArmorSlot.validate])
+    weight_category = models.CharField(choices=ArmorWeightCategory.choices_as_tuple(), validators=[ArmorWeightCategory.validate])
 
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
@@ -49,7 +49,7 @@ class Armor(Equipment):
 
 class Addon(Equipment):
     addon_id = models.IntegerField(primary_key=True)
-    addon_slot = models.CharField(choices=AddonSlot.choices(), validators=[AddonSlot.validate])
+    addon_slot = models.CharField(choices=AddonSlot.choices_as_tuple(), validators=[AddonSlot.validate])
 
     def __init__(self, *args: Any, **kwargs: Any):
         super().__init__(*args, **kwargs)
