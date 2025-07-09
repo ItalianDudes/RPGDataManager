@@ -12,3 +12,13 @@ table, th, td {
     display: flex;
     gap: 0.3rem;
 }
+.alert {
+    text-align: center;
+    font-weight: bold;
+}
+.alert-success {
+    color: green;
+}
+.alert-error {
+    color: red;
+}

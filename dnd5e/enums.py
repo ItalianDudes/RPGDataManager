@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 from django.db.models.enums import IntegerChoices
+from django.utils.translation import gettext_lazy as _
 
 #   COMMON = ("Comune", "#E0E0E0FF")
 #   UNCOMMON = ("Non Comune", "#22A318FF")
@@ -20,8 +20,15 @@ class Rarity(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str):
-            raise ValidationError("Unexpected value type for Rarity")
+        try:
+            value = int(value)
+            if value < 0 or value >= len(cls.choices):
+                raise ValidationError(
+                    _("Rarity: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("Rarity: Provided value type is not a number")
 
     @classmethod
     def choices_as_tuple(cls):
@@ -36,8 +43,17 @@ class ItemCategory(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str) or value == cls._PLACEHOLDER.value:
-            raise ValidationError("Unexpected value type for ItemCategory")
+        try:
+            value = int(value)
+            if value == cls._PLACEHOLDER.value:
+                raise ValidationError("ItemCategory: Placeholder is not allowed")
+            elif value < 0 or value >= len(cls.clean_choices()):
+                raise ValidationError(
+                    _("ItemCategory: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("ItemCategory: Provided value type is not a number")
 
     @classmethod
     def get_placeholder(cls):
@@ -64,8 +80,17 @@ class EquipmentType(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str) or value == cls._PLACEHOLDER.value:
-            raise ValidationError("Unexpected value type for EquipmentType")
+        try:
+            value = int(value)
+            if value == cls._PLACEHOLDER.value:
+                raise ValidationError("EquipmentType: Placeholder is not allowed")
+            elif value < 0 or value >= len(cls.clean_choices()):
+                raise ValidationError(
+                    _("EquipmentType: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("EquipmentType: Provided value type is not a number")
 
     @classmethod
     def get_placeholder(cls):
@@ -100,8 +125,15 @@ class ArmorSlot(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str):
-            raise ValidationError("Unexpected value type for ArmorSlot")
+        try:
+            value = int(value)
+            if value < 0 or value >= len(cls.choices):
+                raise ValidationError(
+                    _("ArmorSlot: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("ArmorSlot: Provided value type is not a number")
 
     @classmethod
     def choices_as_tuple(cls):
@@ -115,8 +147,15 @@ class ArmorWeightCategory(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str):
-            raise ValidationError("Unexpected value type for ArmorWeightCategory")
+        try:
+            value = int(value)
+            if value < 0 or value >= len(cls.choices):
+                raise ValidationError(
+                    _("ArmorWeightCategory: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("ArmorWeightCategory: Provided value type is not a number")
 
     @classmethod
     def choices_as_tuple(cls):
@@ -135,8 +174,15 @@ class AddonSlot(IntegerChoices):
 
     @classmethod
     def validate(cls, value):
-        if not isinstance(value, str):
-            raise ValidationError("Unexpected value type for AddonSlot")
+        try:
+            value = int(value)
+            if value < 0 or value >= len(cls.choices):
+                raise ValidationError(
+                    _("AddonSlot: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("AddonSlot: Provided value type is not a number")
 
     @classmethod
     def choices_as_tuple(cls):

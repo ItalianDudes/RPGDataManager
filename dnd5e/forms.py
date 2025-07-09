@@ -57,7 +57,7 @@ class EditorItem(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         initial_item = kwargs.get('initial', None)
-        if initial_item and isinstance(initial_item, Item):
+        if not initial_item is None and isinstance(initial_item, Item):
             self.fields['name'].initial = initial_item.name
             self.fields['rarity'].initial = initial_item.rarity
             self.fields['weight'].initial = initial_item.weight

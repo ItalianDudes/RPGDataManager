@@ -15,10 +15,4 @@
         <button type="button" onclick="window.location.href='/dnd5e/items/'">INDIETRO</button>
         <button type="submit">SALVA</button>
     </form>
-    {% if invalid_form %}
-        <p style="color: red;">Errore nella compilazione del form.</p>
-    {% endif %}
-    {% if valid_form %}
-        <p style="color: green;">Salvataggio avvenuto con successo!</p>
-    {% endif %}
 {% endblock %}

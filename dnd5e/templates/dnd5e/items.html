@@ -4,12 +4,13 @@
         <title>D&D5E Items</title>
 {% endblock %}
 {%  block content %}
-    <form method="post" class="items-form">
+    <form method="post" class="items-form" id="items-form">
         {{  form.name }}
         {{  form.category }}
         {{  form.equipment_type }}
         {% csrf_token %}
-        <button type="submit">CERCA</button>
+        <button type="submit" name="action" value="search">CERCA</button>
+        <button type="submit" name="action" value="new">CREA NUOVO</button>
     </form>
     <br/>
     {% if items %}
@@ -26,9 +27,9 @@
             <tbody>
                 {% for item in items %}
                     <tr>
-                        <td><a href="/dnd5e/items/{{ item.item_id }}">{{ item.item_id }}</a></td>
-                        <td style="text-align: left; width: 100%;">{{ item.name }}</td>
-                        <td>{{ item.rarity }}</td>
+                        <td>{{ item.item_id }}</td>
+                        <td style="text-align: left; width: 100%;"><a href="/dnd5e/items/{{ item.item_id }}">{{ item.name }}</a></td>
+                        <td>{{ item.get_text_rarity }}</td>
                         <td>{{ item.weight }}Kg</td>
                         <td>{{ item.cost_copper }}MR</td>
                     </tr>
