@@ -15,8 +15,12 @@ def items(request: HttpRequest) -> HttpResponse:
 
     if form.is_valid():
         name = form.cleaned_data.get('name')
-        category = int(form.cleaned_data.get('category'))
-        equipment_type = (form.cleaned_data.get('equipment_type'))
+        category = form.cleaned_data.get('category')
+        if category:
+            category = int(category)
+        equipment_type = form.cleaned_data.get('equipment_type')
+        if equipment_type:
+            equipment_type = int(equipment_type)
 
         if name:
             items_list = items_list.filter(name__contains=name)

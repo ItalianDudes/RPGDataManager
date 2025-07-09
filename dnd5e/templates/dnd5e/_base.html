@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="it">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" type="image/png" href="{% static 'dnd5e/favicon.ico' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'dnd5e/style.css' %}"/>
+        {% block title %}
+            <title>D&D5E Data Manager</title>
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+        <footer>
+            <p>Progettato e scritto da Hacker6329</p>
+        </footer>
+    </body>
+</html>

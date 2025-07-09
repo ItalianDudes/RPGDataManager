@@ -1,17 +1,12 @@
-<!DOCTYPE html>
+{% extends "dnd5e/_base.html" %}
 {% load static %}
-<html lang="it">
-    <head>
-        <meta charset="UTF-8"/>
-        <link rel="shortcut icon" type="image/png" href="{% static 'dnd5e/favicon.ico' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'dnd5e/style.css' %}"/>
-        <title>D&D5E Items</title>
-    </head>
-    <body>
+{% block title %}
+    <title>D&D5E Items</title>
+{% endblock %}
+{% block content %}
     {% if item %}
         <p>{{ item.name }}#{{ item.item_id }}</p>
     {% else %}
         <p>Oggetto non trovato.</p>
     {% endif %}
-    </body>
-</html>
+{% endblock %}

@@ -1,15 +1,7 @@
-<!DOCTYPE html>
+{% extends "dnd5e/_base.html" %}
 {% load static %}
-<html lang="it">
-    <head>
-        <meta charset="UTF-8"/>
-        <link rel="shortcut icon" type="image/png" href="{% static 'dnd5e/favicon.ico' %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static 'dnd5e/style.css' %}"/>
-        <title>D&D5E Data Manager</title>
-    </head>
-    <body>
-        <ul>
-            <li><a href="/dnd5e/items/">Oggetti</a></li>
-        </ul>
-    </body>
-</html>
+{% block content %}
+    <ul>
+        <li><a href="/dnd5e/items/">Oggetti</a></li>
+    </ul>
+{% endblock %}
