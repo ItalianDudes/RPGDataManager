@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 
 from dnd5e.enums import ItemCategory, EquipmentType
-from dnd5e.forms import ItemsForm
+from dnd5e.forms import ItemsForm, EditorItem
 from dnd5e.models import Item
 
 
@@ -33,7 +33,22 @@ def items(request: HttpRequest) -> HttpResponse:
 
 def item(request: HttpRequest, item_id: int) -> HttpResponse:
     selected_item = Item.objects.filter(item_id=item_id).first()
-    if selected_item:
-        return render(request, 'dnd5e/item.html', {'item': selected_item})
+    if selected_item is None:
+        return HttpResponseNotFound('Oggetto non trovato.')
+
+    if request.method == 'POST':
+        form = EditorItem(request.POST)
+        if form.is_valid():
+            selected_item.name = form.cleaned_data['name']
+            selected_item.rarity = form.cleaned_data['rarity']
+            selected_item.weight = form.cleaned_data['weight']
+            selected_item.cost_copper = form.cleaned_data['cost_copper']
+            selected_item.description = form.cleaned_data['description']
+            selected_item.save()
+            return render(request, 'dnd5e/item.html', {'form': form, 'valid_form': True})
+        else:
+            return render(request, 'dnd5e/item.html', {'form': form, 'invalid_form': True})
     else:
-        return HttpResponseNotFound('Item not found.')
+        form = EditorItem(initial=selected_item.data_to_tuple())
+        return render(request, 'dnd5e/item.html', {'form': form})
+

@@ -22,6 +22,16 @@ class Item(models.Model):
         Rarity.validate(self.rarity)
         ItemCategory.validate(self.category)
 
+    def data_to_tuple(self):
+        return {
+            'name': self.name,
+            'category': self.category,
+            'rarity': self.rarity,
+            'weight': self.weight,
+            'cost_copper': self.cost_copper,
+            'description': self.description,
+        }
+
 
 class Equipment(Item):
     equipment_id = models.IntegerField(primary_key=True)
