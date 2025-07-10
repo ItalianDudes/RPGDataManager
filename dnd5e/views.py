@@ -64,12 +64,37 @@ def new(request: HttpRequest) -> HttpResponse:
     print(f'ITEM_ID: {item_id}')
     print(f'CATEGORY: {category}')
     print(f'EQTYPE: {equipment_type}')
-    return HttpResponse('Hello there')
 
-def item(request: HttpRequest, item_id: int) -> HttpResponse:
+    if item_id is None: # New
+        if request.method == 'POST': # Form Received
+            form = EditorItem(request.POST)
+            if form.is_valid(): # Valid Form
+                new_item = Item(
+                    name=form.cleaned_data['name'],
+                    category=Category.ITEM,
+                    rarity=form.cleaned_data['rarity'],
+                    weight=form.cleaned_data['weight'],
+                    cost_copper=form.cleaned_data['cost_copper'],
+                    description=form.cleaned_data['description']
+                )
+                new_item.save()
+                messages.success(request, 'Salvataggio avvenuto con successo!')
+                return redirect('edit', new_item.item_id)
+            else: # Invalid Form
+                messages.error(request, "Form non valido, controllare i dati inseriti.")
+                return render(request, 'dnd5e/item.html', {'form': form})
+        else: # Initial Get
+            return render(request, 'dnd5e/item.html', {'form': EditorItem(request.POST)})
+    else: # Edit
+        return redirect('edit', item_id)
+
+def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with Item... for the moment
     selected_item = Item.objects.filter(item_id=item_id).first()
     if selected_item is None:
         return HttpResponseNotFound('Oggetto non trovato.')
+
+    if selected_item.category != Category.ITEM:
+        return HttpResponseServerError('Edit al momento disponibile solo per gli oggetti.')
 
     if request.method == 'POST':
         form = EditorItem(request.POST)
