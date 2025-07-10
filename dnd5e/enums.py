@@ -35,25 +35,37 @@ class Rarity(IntegerChoices):
         return tuple(cls.choices)
 
 
-class ItemCategory(IntegerChoices):
+class Category(IntegerChoices):
     _PLACEHOLDER = -1, "Categoria"
     ITEM = 0, "Oggetto"
     EQUIPMENT = 1, "Equipaggiamento"
     SPELL = 2, "Incantesimo"
 
     @classmethod
-    def validate(cls, value):
+    def form_validate(cls, value):
         try:
             value = int(value)
-            if value == cls._PLACEHOLDER.value:
-                raise ValidationError("ItemCategory: Placeholder is not allowed")
-            elif value < 0 or value >= len(cls.clean_choices()):
+            if value < -1 or value >= len(cls.clean_choices()):
                 raise ValidationError(
-                    _("ItemCategory: Index %{value}s out of bounds"),
+                    _("Category: Index %{value}s out of bounds"),
                     params={"value": value}
                 )
         except ValueError:
-            raise ValidationError("ItemCategory: Provided value type is not a number")
+            raise ValidationError("Category: Provided value type is not a number")
+
+    @classmethod
+    def full_validate(cls, value):
+        try:
+            value = int(value)
+            if value == cls._PLACEHOLDER.value:
+                raise ValidationError("Category: Placeholder is not allowed")
+            elif value < 0 or value >= len(cls.clean_choices()):
+                raise ValidationError(
+                    _("Category: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("Category: Provided value type is not a number")
 
     @classmethod
     def get_placeholder(cls):
@@ -79,7 +91,19 @@ class EquipmentType(IntegerChoices):
     ADDON = 2, "Addon"
 
     @classmethod
-    def validate(cls, value):
+    def form_validate(cls, value):
+        try:
+            value = int(value)
+            if value < -1 or value >= len(cls.clean_choices()):
+                raise ValidationError(
+                    _("EquipmentType: Index %{value}s out of bounds"),
+                    params={"value": value}
+                )
+        except ValueError:
+            raise ValidationError("EquipmentType: Provided value type is not a number")
+
+    @classmethod
+    def full_validate(cls, value):
         try:
             value = int(value)
             if value == cls._PLACEHOLDER.value:

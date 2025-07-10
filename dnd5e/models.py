@@ -1,12 +1,11 @@
 import base64
 import binascii
-from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from dnd5e.enums import ArmorWeightCategory, AddonSlot, ItemCategory, EquipmentType, Rarity, ArmorSlot
+from dnd5e.enums import ArmorWeightCategory, AddonSlot, Category, EquipmentType, Rarity, ArmorSlot
 
 
 class Base64Image(models.Model):
@@ -16,8 +15,8 @@ class Base64Image(models.Model):
     extension = models.CharField(null=False, blank=False, max_length=32)
     bas64_image = models.TextField(null=False, blank=False)
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
+    def clean(self):
+        super().clean()
         self.validate(self.extension, self.bas64_image)
 
     @classmethod
@@ -48,17 +47,17 @@ class Item(models.Model):
     base64_image = models.TextField(null=True, blank=True)
     image_extension = models.TextField(null=True, blank=True)
     name = models.CharField(max_length=256, null=False, blank=False, unique=True)
-    category = models.IntegerField(choices=ItemCategory.clean_choices_as_tuple(), validators=[ItemCategory.validate])
+    category = models.IntegerField(choices=Category.clean_choices_as_tuple(), validators=[Category.full_validate])
     rarity = models.IntegerField(choices=Rarity.choices_as_tuple(), default=Rarity.COMMON, validators=[Rarity.validate])
     weight = models.FloatField(default=0, null=False, blank=False)
     cost_copper = models.IntegerField(default=0, null=False, blank=False)
     description = models.TextField(null=False, blank=True)
     visible = models.BooleanField(default=True)
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
+    def clean(self):
+        super().clean()
         Rarity.validate(self.rarity)
-        ItemCategory.validate(self.category)
+        Category.full_validate(self.category)
 
     def get_text_rarity(self):
         return Rarity.labels[self.rarity]
@@ -76,7 +75,7 @@ class Item(models.Model):
 
 class Equipment(Item):
     equipment_id = models.AutoField(primary_key=True)
-    type = models.IntegerField(choices=EquipmentType.clean_choices_as_tuple(), validators=[EquipmentType.validate])
+    equipment_type = models.IntegerField(choices=EquipmentType.clean_choices_as_tuple(), validators=[EquipmentType.full_validate])
     ca_effect = models.IntegerField(null=False, blank=False, default=0)
     life_effect = models.IntegerField(null=False, blank=False, default=0)
     life_effect_perc = models.FloatField(null=False, blank=False, default=0)
@@ -84,17 +83,17 @@ class Equipment(Item):
     load_effect_perc = models.FloatField(null=False, blank=False, default=0)
     other_effects = models.TextField(null=False, blank=True)
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
-        EquipmentType.validate(self.type)
+    def clean(self):
+        super().clean()
+        EquipmentType.full_validate(self.equipment_type)
 
 class Armor(Equipment):
     armor_id = models.AutoField(primary_key=True)
     armor_slot = models.IntegerField(choices=ArmorSlot.choices_as_tuple(), validators=[ArmorSlot.validate])
     weight_category = models.IntegerField(choices=ArmorWeightCategory.choices_as_tuple(), validators=[ArmorWeightCategory.validate])
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
+    def clean(self):
+        super().clean()
         ArmorSlot.validate(self.armor_slot)
         ArmorWeightCategory.validate(self.weight_category)
 
@@ -102,8 +101,8 @@ class Addon(Equipment):
     addon_id = models.AutoField(primary_key=True)
     addon_slot = models.IntegerField(choices=AddonSlot.choices_as_tuple(), validators=[AddonSlot.validate])
 
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
+    def clean(self):
+        super().clean()
         AddonSlot.validate(self.addon_slot)
 
 class Weapon(Equipment):

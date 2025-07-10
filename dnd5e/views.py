@@ -1,10 +1,10 @@
-from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
+from django.http import HttpRequest, HttpResponse, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseServerError
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from dnd5e.enums import ItemCategory, EquipmentType
+from dnd5e.enums import Category, EquipmentType
 from dnd5e.forms import ItemsForm, EditorItem
-from dnd5e.models import Item
+from dnd5e.models import Item, Equipment
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -15,7 +15,7 @@ def items(request: HttpRequest) -> HttpResponse:
     action = request.POST.get('action')
     items_list = Item.objects.all().filter(visible=True)
 
-    if request.method=='POST' and form.is_valid():
+    if request.method == "POST" and form.is_valid():
         name = form.cleaned_data.get('name')
 
         category = form.cleaned_data.get('category')
@@ -33,9 +33,9 @@ def items(request: HttpRequest) -> HttpResponse:
                 return HttpResponseBadRequest('Tipo Equipaggiamento non valido')
 
         if action == 'new':
-            if not category is None and category in ItemCategory.values and category != ItemCategory.get_placeholder().value: # Valid Category
+            if not category is None and category in Category.values and category != Category.get_placeholder().value: # Valid Category
                 request.session['category'] = category
-                if category == ItemCategory.EQUIPMENT.value: # Category = EquipmentType
+                if category == Category.EQUIPMENT.value: # Category = EquipmentType
                     if not equipment_type is None and equipment_type in EquipmentType.values and equipment_type != EquipmentType.get_placeholder().value: # Valid Category and EquipmentType
                         request.session['equipment_type'] = equipment_type
                         return redirect('new')
@@ -49,19 +49,22 @@ def items(request: HttpRequest) -> HttpResponse:
         elif action == 'search':
             if name:
                 items_list = items_list.filter(name__contains=name)
-            if not category is None and category in ItemCategory.values and category != ItemCategory.get_placeholder().value:
+            if not category is None and category in Category.values and category != Category.get_placeholder().value:
                 items_list = items_list.filter(category=category)
-                if category == ItemCategory.EQUIPMENT.value and not equipment_type is None and equipment_type in EquipmentType.values and equipment_type != EquipmentType.get_placeholder().value:
-                    items_list = items_list.filter(equipment_type=equipment_type)
+                if category == Category.EQUIPMENT.value and not equipment_type is None and equipment_type in EquipmentType.values and equipment_type != EquipmentType.get_placeholder().value:
+                    items_list = Equipment.objects.all().filter(equipment_type=equipment_type)
 
     return render(request, 'dnd5e/items.html', {'form': form, 'items': items_list})
 
 def new(request: HttpRequest) -> HttpResponse:
-    category = request.session.pop('category', None)
-    equipment_type = request.session.pop('equipment_type', None)
-    print(category)
-    print(equipment_type)
-    return HttpResponse('GG')
+    item_id = request.session.get('item_id', None)
+    category = request.session.get('category', None)
+    equipment_type = request.session.get('equipment_type', None)
+    print(f'REQMETHOD: {request.method}')
+    print(f'ITEM_ID: {item_id}')
+    print(f'CATEGORY: {category}')
+    print(f'EQTYPE: {equipment_type}')
+    return HttpResponse('Hello there')
 
 def item(request: HttpRequest, item_id: int) -> HttpResponse:
     selected_item = Item.objects.filter(item_id=item_id).first()

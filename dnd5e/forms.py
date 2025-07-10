@@ -1,7 +1,7 @@
 from django import forms
 
 from dnd5e.models import Item
-from dnd5e.enums import ItemCategory, EquipmentType, Rarity
+from dnd5e.enums import Category, EquipmentType, Rarity
 
 
 class ItemsForm(forms.Form):
@@ -11,14 +11,14 @@ class ItemsForm(forms.Form):
     category = forms.ChoiceField(
         required=False,
         label="",
-        choices=ItemCategory.choices_as_tuple(),
-        validators=[ItemCategory.validate]
+        choices=Category.choices_as_tuple(),
+        validators=[Category.form_validate]
     )
     equipment_type = forms.ChoiceField(
         required=False,
         label="",
         choices=EquipmentType.choices_as_tuple(),
-        validators=[EquipmentType.validate]
+        validators=[EquipmentType.form_validate]
     )
 
 
