@@ -10,6 +10,8 @@
         {{ form.weight }}
         {{ form.cost_copper }}
         {{ form.description }}
+        {% block category_fields %}
+        {% endblock %}
         {% csrf_token %}
         <br/>
         <button type="button" onclick="window.location.href='/dnd5e/items/'">INDIETRO</button>

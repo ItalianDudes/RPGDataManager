@@ -41,7 +41,6 @@ class Base64Image(models.Model):
         }
 
 
-
 class Item(models.Model):
     item_id = models.AutoField(primary_key=True)
     base64_image = models.TextField(null=True, blank=True)
@@ -87,6 +86,7 @@ class Equipment(Item):
         super().clean()
         EquipmentType.full_validate(self.equipment_type)
 
+
 class Armor(Equipment):
     armor_id = models.AutoField(primary_key=True)
     armor_slot = models.IntegerField(choices=ArmorSlot.choices_as_tuple(), validators=[ArmorSlot.validate])
@@ -97,6 +97,7 @@ class Armor(Equipment):
         ArmorSlot.validate(self.armor_slot)
         ArmorWeightCategory.validate(self.weight_category)
 
+
 class Addon(Equipment):
     addon_id = models.AutoField(primary_key=True)
     addon_slot = models.IntegerField(choices=AddonSlot.choices_as_tuple(), validators=[AddonSlot.validate])
@@ -105,10 +106,12 @@ class Addon(Equipment):
         super().clean()
         AddonSlot.validate(self.addon_slot)
 
+
 class Weapon(Equipment):
     weapon_id = models.AutoField(primary_key=True)
     weapon_category = models.CharField(null=False, blank=True, max_length=64)
     properties = models.TextField(null=False, blank=True)
+
 
 class Spell(Item):
     spell_id = models.AutoField(primary_key=True)

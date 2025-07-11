@@ -1,0 +1,10 @@
+{% extends "dnd5e/item.html" %}
+{% load static %}
+{% block category_fields %}
+    {{ form.level }}
+    {{ form.spell_type }}
+    {{ form.cast_time }}
+    {{ form.range }}
+    {{ form.components }}
+    {{ form.duration }}
+{% endblock %}
