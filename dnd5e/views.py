@@ -208,10 +208,7 @@ def new(request: HttpRequest) -> HttpResponse:
     else: # Edit
         return redirect('edit', item_id)
 
-
-# TODO: PROBLEMA: la new salva correttamente i dati sul DB, ma la edit anche se carica il template corretto non carica in esso i dati
-
-def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with Item... for the moment
+def edit(request: HttpRequest, item_id: int) -> HttpResponse:
     selected_item = Item.objects.filter(item_id=item_id).first()
     if selected_item is None:
         return HttpResponseNotFound('Oggetto non trovato.')
@@ -235,44 +232,46 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with I
 
         elif category == Category.SPELL:
             form = EditorSpell(request.POST)
+            selected_spell = Spell.objects.all().filter(item_id=item_id).first()
             if form.is_valid():
-                selected_item.name = form.cleaned_data['name']
-                selected_item.rarity = form.cleaned_data['rarity']
-                selected_item.weight = form.cleaned_data['weight']
-                selected_item.cost_copper = form.cleaned_data['cost_copper']
-                selected_item.description = form.cleaned_data['description']
-                selected_item.level = form.cleaned_data['level']
-                selected_item.spell_type = form.cleaned_data['spell_type']
-                selected_item.cast_time = form.cleaned_data['cast_time']
-                selected_item.range = form.cleaned_data['range']
-                selected_item.components = form.cleaned_data['components']
-                selected_item.duration = form.cleaned_data['duration']
-                selected_item.save()
+                selected_spell.name = form.cleaned_data['name']
+                selected_spell.rarity = form.cleaned_data['rarity']
+                selected_spell.weight = form.cleaned_data['weight']
+                selected_spell.cost_copper = form.cleaned_data['cost_copper']
+                selected_spell.description = form.cleaned_data['description']
+                selected_spell.level = form.cleaned_data['level']
+                selected_spell.spell_type = form.cleaned_data['spell_type']
+                selected_spell.cast_time = form.cleaned_data['cast_time']
+                selected_spell.range = form.cleaned_data['range']
+                selected_spell.components = form.cleaned_data['components']
+                selected_spell.duration = form.cleaned_data['duration']
+                selected_spell.save()
                 messages.success(request,'Salvataggio incantesimo avvenuto con successo!')
             else:
                 messages.error(request, "Form non valido, controllare i dati inseriti.")
             return render(request, 'dnd5e/spell.html', {'form': form})
 
         elif category == Category.EQUIPMENT:
-            selected_item = Equipment.objects.all().filter(item_id=item_id).first()
-            equipment_type = selected_item.equipment_type
+            selected_equipment = Equipment.objects.all().filter(item_id=item_id).first()
+            equipment_type = selected_equipment.equipment_type
             if equipment_type == EquipmentType.ARMOR:
                 form = EditorArmor(request.POST)
+                selected_armor = Armor.objects.all().filter(item_id=item_id).first()
                 if form.is_valid():
-                    selected_item.name = form.cleaned_data['name']
-                    selected_item.rarity = form.cleaned_data['rarity']
-                    selected_item.weight = form.cleaned_data['weight']
-                    selected_item.cost_copper = form.cleaned_data['cost_copper']
-                    selected_item.description = form.cleaned_data['description']
-                    selected_item.ca_effect = form.cleaned_data['ca_effect']
-                    selected_item.life_effect = form.cleaned_data['life_effect']
-                    selected_item.life_effect_perc = form.cleaned_data['life_effect_perc']
-                    selected_item.load_effect = form.cleaned_data['load_effect']
-                    selected_item.load_effect_perc = form.cleaned_data['load_effect_perc']
-                    selected_item.other_effects = form.cleaned_data['other_effects']
-                    selected_item.armor_slot = form.cleaned_data['armor_slot']
-                    selected_item.weight_category = form.cleaned_data['weight_category']
-                    selected_item.save()
+                    selected_armor.name = form.cleaned_data['name']
+                    selected_armor.rarity = form.cleaned_data['rarity']
+                    selected_armor.weight = form.cleaned_data['weight']
+                    selected_armor.cost_copper = form.cleaned_data['cost_copper']
+                    selected_armor.description = form.cleaned_data['description']
+                    selected_armor.ca_effect = form.cleaned_data['ca_effect']
+                    selected_armor.life_effect = form.cleaned_data['life_effect']
+                    selected_armor.life_effect_perc = form.cleaned_data['life_effect_perc']
+                    selected_armor.load_effect = form.cleaned_data['load_effect']
+                    selected_armor.load_effect_perc = form.cleaned_data['load_effect_perc']
+                    selected_armor.other_effects = form.cleaned_data['other_effects']
+                    selected_armor.armor_slot = form.cleaned_data['armor_slot']
+                    selected_armor.weight_category = form.cleaned_data['weight_category']
+                    selected_armor.save()
                     messages.success(request, 'Salvataggio armatura avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
@@ -280,20 +279,21 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with I
 
             elif equipment_type == EquipmentType.ADDON:
                 form = EditorAddon(request.POST)
+                selected_addon = Addon.objects.all().filter(item_id=item_id).first()
                 if form.is_valid():
-                    selected_item.name = form.cleaned_data['name']
-                    selected_item.rarity = form.cleaned_data['rarity']
-                    selected_item.weight = form.cleaned_data['weight']
-                    selected_item.cost_copper = form.cleaned_data['cost_copper']
-                    selected_item.description = form.cleaned_data['description']
-                    selected_item.ca_effect = form.cleaned_data['ca_effect']
-                    selected_item.life_effect = form.cleaned_data['life_effect']
-                    selected_item.life_effect_perc = form.cleaned_data['life_effect_perc']
-                    selected_item.load_effect = form.cleaned_data['load_effect']
-                    selected_item.load_effect_perc = form.cleaned_data['load_effect_perc']
-                    selected_item.other_effects = form.cleaned_data['other_effects']
-                    selected_item.addon_slot = form.cleaned_data['addon_slot']
-                    selected_item.save()
+                    selected_addon.name = form.cleaned_data['name']
+                    selected_addon.rarity = form.cleaned_data['rarity']
+                    selected_addon.weight = form.cleaned_data['weight']
+                    selected_addon.cost_copper = form.cleaned_data['cost_copper']
+                    selected_addon.description = form.cleaned_data['description']
+                    selected_addon.ca_effect = form.cleaned_data['ca_effect']
+                    selected_addon.life_effect = form.cleaned_data['life_effect']
+                    selected_addon.life_effect_perc = form.cleaned_data['life_effect_perc']
+                    selected_addon.load_effect = form.cleaned_data['load_effect']
+                    selected_addon.load_effect_perc = form.cleaned_data['load_effect_perc']
+                    selected_addon.other_effects = form.cleaned_data['other_effects']
+                    selected_addon.addon_slot = form.cleaned_data['addon_slot']
+                    selected_addon.save()
                     messages.success(request, 'Salvataggio addon avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
@@ -301,21 +301,22 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with I
 
             elif equipment_type == EquipmentType.WEAPON:
                 form = EditorWeapon(request.POST)
+                selected_weapon = Weapon.objects.all().filter(item_id=item_id).first()
                 if form.is_valid():
-                    selected_item.name = form.cleaned_data['name']
-                    selected_item.rarity = form.cleaned_data['rarity']
-                    selected_item.weight = form.cleaned_data['weight']
-                    selected_item.cost_copper = form.cleaned_data['cost_copper']
-                    selected_item.description = form.cleaned_data['description']
-                    selected_item.ca_effect = form.cleaned_data['ca_effect']
-                    selected_item.life_effect = form.cleaned_data['life_effect']
-                    selected_item.life_effect_perc = form.cleaned_data['life_effect_perc']
-                    selected_item.load_effect = form.cleaned_data['load_effect']
-                    selected_item.load_effect_perc = form.cleaned_data['load_effect_perc']
-                    selected_item.other_effects = form.cleaned_data['other_effects']
-                    selected_item.weapon_category = form.cleaned_data['weapon_category']
-                    selected_item.properties = form.cleaned_data['properties']
-                    selected_item.save()
+                    selected_weapon.name = form.cleaned_data['name']
+                    selected_weapon.rarity = form.cleaned_data['rarity']
+                    selected_weapon.weight = form.cleaned_data['weight']
+                    selected_weapon.cost_copper = form.cleaned_data['cost_copper']
+                    selected_weapon.description = form.cleaned_data['description']
+                    selected_weapon.ca_effect = form.cleaned_data['ca_effect']
+                    selected_weapon.life_effect = form.cleaned_data['life_effect']
+                    selected_weapon.life_effect_perc = form.cleaned_data['life_effect_perc']
+                    selected_weapon.load_effect = form.cleaned_data['load_effect']
+                    selected_weapon.load_effect_perc = form.cleaned_data['load_effect_perc']
+                    selected_weapon.other_effects = form.cleaned_data['other_effects']
+                    selected_weapon.weapon_category = form.cleaned_data['weapon_category']
+                    selected_weapon.properties = form.cleaned_data['properties']
+                    selected_weapon.save()
                     messages.success(request, 'Salvataggio arma avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
@@ -330,16 +331,16 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse: #Only works with I
         if category == Category.ITEM:  # Item
             return render(request, 'dnd5e/item.html', {'form': EditorItem(initial=selected_item.data_to_tuple())})
         elif category == Category.SPELL:  # Spell
-            return render(request, 'dnd5e/spell.html', {'form': EditorSpell(initial=selected_item.data_to_tuple())})
+            return render(request, 'dnd5e/spell.html', {'form': EditorSpell(initial=Spell.objects.all().filter(item_id=item_id).first().data_to_tuple())})
         elif category == Category.EQUIPMENT:  # Equipment
             selected_item = Equipment.objects.all().filter(item_id=item_id).first()
             equipment_type = selected_item.equipment_type
             if equipment_type == EquipmentType.ARMOR:  # Armor
-                return render(request, 'dnd5e/armor.html', {'form': EditorArmor(initial=selected_item.data_to_tuple())})
+                return render(request, 'dnd5e/armor.html', {'form': EditorArmor(initial=Armor.objects.all().filter(item_id=item_id).first().data_to_tuple())})
             elif equipment_type == EquipmentType.ADDON:  # Addon
-                return render(request, 'dnd5e/addon.html', {'form': EditorAddon(initial=selected_item.data_to_tuple())})
+                return render(request, 'dnd5e/addon.html', {'form': EditorAddon(initial=Addon.objects.all().filter(item_id=item_id).first().data_to_tuple())})
             elif equipment_type == EquipmentType.WEAPON:  # Weapon
-                return render(request, 'dnd5e/weapon.html', {'form': EditorWeapon(initial=selected_item.data_to_tuple())})
+                return render(request, 'dnd5e/weapon.html', {'form': EditorWeapon(initial=Weapon.objects.all().filter(item_id=item_id).first().data_to_tuple())})
             else:  # Invalid EquipmentType
                 return HttpResponseBadRequest('Tipo Equipaggiamento non valido.')
         else:  # Invalid Category

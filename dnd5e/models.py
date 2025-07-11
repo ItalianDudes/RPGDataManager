@@ -86,6 +86,17 @@ class Equipment(Item):
         super().clean()
         EquipmentType.full_validate(self.equipment_type)
 
+    def data_to_tuple(self):
+        return super().data_to_tuple() | {
+            'equipment_type': self.equipment_type,
+            'ca_effect': self.ca_effect,
+            'life_effect': self.life_effect,
+            'life_effect_perc': self.life_effect_perc,
+            'load_effect': self.load_effect,
+            'load_effect_perc': self.load_effect_perc,
+            'other_effects': self.other_effects,
+        }
+
 
 class Armor(Equipment):
     armor_id = models.AutoField(primary_key=True)
@@ -97,6 +108,12 @@ class Armor(Equipment):
         ArmorSlot.validate(self.armor_slot)
         ArmorWeightCategory.validate(self.weight_category)
 
+    def data_to_tuple(self):
+        return super().data_to_tuple() | {
+            'armor_slot': self.armor_slot,
+            'weight_category': self.weight_category,
+        }
+
 
 class Addon(Equipment):
     addon_id = models.AutoField(primary_key=True)
@@ -106,11 +123,22 @@ class Addon(Equipment):
         super().clean()
         AddonSlot.validate(self.addon_slot)
 
+    def data_to_tuple(self):
+        return super().data_to_tuple() | {
+            'addon_slot': self.addon_slot,
+        }
+
 
 class Weapon(Equipment):
     weapon_id = models.AutoField(primary_key=True)
     weapon_category = models.CharField(null=False, blank=True, max_length=64)
     properties = models.TextField(null=False, blank=True)
+
+    def data_to_tuple(self):
+        return super().data_to_tuple() | {
+            'weapon_category': self.weapon_category,
+            'properties': self.properties,
+        }
 
 
 class Spell(Item):
@@ -121,3 +149,13 @@ class Spell(Item):
     range = models.CharField(null=False, blank=False, max_length=64)
     components = models.CharField(null=False, blank=False, max_length=64)
     duration = models.CharField(null=False, blank=False, max_length=64)
+
+    def data_to_tuple(self):
+        return super().data_to_tuple() | {
+            'level': self.level,
+            'spell_type': self.spell_type,
+            'cast_time': self.cast_time,
+            'range': self.range,
+            'components': self.components,
+            'duration': self.duration,
+        }
