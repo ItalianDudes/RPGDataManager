@@ -213,6 +213,13 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
     if selected_item is None:
         return HttpResponseNotFound('Oggetto non trovato.')
 
+    if request.POST.get('action') == 'delete':
+        item_id = selected_item.item_id
+        name = selected_item.name
+        selected_item.delete()
+        messages.success(request, f'{name}#{item_id} eliminato con successo!')
+        return redirect('items')
+
     category = selected_item.category
 
     if request.method == 'POST': # Form Received
@@ -228,7 +235,7 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
                 messages.success(request,'Salvataggio oggetto avvenuto con successo!')
             else:
                 messages.error(request, "Form non valido, controllare i dati inseriti.")
-            return render(request, 'dnd5e/item.html', {'form': form})
+            return render(request, 'dnd5e/item.html', {'form': form, 'edit': True})
 
         elif category == Category.SPELL:
             form = EditorSpell(request.POST)
@@ -249,7 +256,7 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
                 messages.success(request,'Salvataggio incantesimo avvenuto con successo!')
             else:
                 messages.error(request, "Form non valido, controllare i dati inseriti.")
-            return render(request, 'dnd5e/spell.html', {'form': form})
+            return render(request, 'dnd5e/spell.html', {'form': form, 'edit': True})
 
         elif category == Category.EQUIPMENT:
             selected_equipment = Equipment.objects.all().filter(item_id=item_id).first()
@@ -275,7 +282,7 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
                     messages.success(request, 'Salvataggio armatura avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
-                return render(request, 'dnd5e/armor.html', {'form': form})
+                return render(request, 'dnd5e/armor.html', {'form': form, 'edit': True})
 
             elif equipment_type == EquipmentType.ADDON:
                 form = EditorAddon(request.POST)
@@ -297,7 +304,7 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
                     messages.success(request, 'Salvataggio addon avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
-                return render(request, 'dnd5e/addon.html', {'form': form})
+                return render(request, 'dnd5e/addon.html', {'form': form, 'edit': True})
 
             elif equipment_type == EquipmentType.WEAPON:
                 form = EditorWeapon(request.POST)
@@ -320,7 +327,7 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
                     messages.success(request, 'Salvataggio arma avvenuto con successo!')
                 else:
                     messages.error(request, "Form non valido, controllare i dati inseriti.")
-                return render(request, 'dnd5e/weapon.html', {'form': form})
+                return render(request, 'dnd5e/weapon.html', {'form': form, 'edit': True})
 
             else:
                 return HttpResponseBadRequest('Tipo Equipaggiamento non valido.')
@@ -329,18 +336,18 @@ def edit(request: HttpRequest, item_id: int) -> HttpResponse:
 
     else: # Initial Get
         if category == Category.ITEM:  # Item
-            return render(request, 'dnd5e/item.html', {'form': EditorItem(initial=selected_item.data_to_tuple())})
+            return render(request, 'dnd5e/item.html', {'form': EditorItem(initial=selected_item.data_to_tuple()), 'edit': True})
         elif category == Category.SPELL:  # Spell
-            return render(request, 'dnd5e/spell.html', {'form': EditorSpell(initial=Spell.objects.all().filter(item_id=item_id).first().data_to_tuple())})
+            return render(request, 'dnd5e/spell.html', {'form': EditorSpell(initial=Spell.objects.all().filter(item_id=item_id).first().data_to_tuple()), 'edit': True})
         elif category == Category.EQUIPMENT:  # Equipment
             selected_item = Equipment.objects.all().filter(item_id=item_id).first()
             equipment_type = selected_item.equipment_type
             if equipment_type == EquipmentType.ARMOR:  # Armor
-                return render(request, 'dnd5e/armor.html', {'form': EditorArmor(initial=Armor.objects.all().filter(item_id=item_id).first().data_to_tuple())})
+                return render(request, 'dnd5e/armor.html', {'form': EditorArmor(initial=Armor.objects.all().filter(item_id=item_id).first().data_to_tuple()), 'edit': True})
             elif equipment_type == EquipmentType.ADDON:  # Addon
-                return render(request, 'dnd5e/addon.html', {'form': EditorAddon(initial=Addon.objects.all().filter(item_id=item_id).first().data_to_tuple())})
+                return render(request, 'dnd5e/addon.html', {'form': EditorAddon(initial=Addon.objects.all().filter(item_id=item_id).first().data_to_tuple()), 'edit': True})
             elif equipment_type == EquipmentType.WEAPON:  # Weapon
-                return render(request, 'dnd5e/weapon.html', {'form': EditorWeapon(initial=Weapon.objects.all().filter(item_id=item_id).first().data_to_tuple())})
+                return render(request, 'dnd5e/weapon.html', {'form': EditorWeapon(initial=Weapon.objects.all().filter(item_id=item_id).first().data_to_tuple()), 'edit': True})
             else:  # Invalid EquipmentType
                 return HttpResponseBadRequest('Tipo Equipaggiamento non valido.')
         else:  # Invalid Category
