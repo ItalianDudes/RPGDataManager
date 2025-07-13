@@ -32,7 +32,14 @@ def items(request: HttpRequest) -> HttpResponse:
             except ValueError:
                 return HttpResponseBadRequest('Tipo Equipaggiamento non valido')
 
-        if action == 'new':
+        if action == 'delete_selected':
+            selected_items_id = request.POST.getlist('item_selected')
+            for item_id in selected_items_id:
+                Item.objects.all().filter(item_id=item_id).delete()
+            items_list = Item.objects.all().filter(visible=True)
+            messages.success(request, "Eliminazione elementi avvenuta con successo!")
+
+        elif action == 'new':
             if not category is None and category in Category.values and category != Category.get_placeholder().value: # Valid Category
                 request.session['category'] = category
                 if category == Category.EQUIPMENT.value: # Category = EquipmentType

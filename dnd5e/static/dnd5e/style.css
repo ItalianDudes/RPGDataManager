@@ -8,7 +8,7 @@ table, th, td {
 }
 
 /* CLASS DEFINITIONS */
-.items-form {
+.items-form-div {
     display: flex;
     gap: 0.3rem;
 }
@@ -21,4 +21,9 @@ table, th, td {
 }
 .alert-error {
     color: red;
+}
+.dnd5-footer {
+    text-align: center;
+    color: gray;
+    font-size: 10px;
 }

@@ -1,42 +1,61 @@
 {% extends "dnd5e/_base.html" %}
 {% load static %}
-{% block title %}
-        <title>D&D5E Items</title>
+{% block head %}
+    <title>D&D5E Items</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll('input[name="item_selected"]');
+            const deleteButton = document.querySelector('button[value="delete_selected"]');
+            deleteButton.style.display = "none";
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    deleteButton.style.display = anyChecked ? "inline-block" : "none";
+                });
+            });
+        });
+    </script>
 {% endblock %}
 {%  block content %}
-    <form method="post" class="items-form" id="items-form">
-        {{  form.name }}
-        {{  form.category }}
-        {{  form.equipment_type }}
-        {% csrf_token %}
-        <button type="submit" name="action" value="search">CERCA</button>
-        <button type="submit" name="action" value="new">CREA NUOVO</button>
-    </form>
-    <br/>
-    {% if items %}
-        <table>
-            <thead>
-                <tr>
-                    <th>#ID</th>
-                    <th>Nome</th>
-                    <th>Rarità</th>
-                    <th>Peso (KG)</th>
-                    <th>Costo (MR)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
+    <form method="post">
+        <div class="items-form-div">
+            {{  form.name }}
+            {{  form.category }}
+            {{  form.equipment_type }}
+            {% csrf_token %}
+            <button type="submit" name="action" value="search">CERCA</button>
+            <button type="submit" name="action" value="new">CREA NUOVO</button>
+            <button type="submit" name="action" value="delete_selected" onclick="return confirm('Confermare eliminazione degli elementi selezionati?')">ELIMINA SELEZIONATI</button>
+        </div>
+        <br/>
+        {% if items %}
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ item.item_id }}</td>
-                        <td style="text-align: left; width: 100%;"><a href="/dnd5e/items/{{ item.item_id }}">{{ item.name }}</a></td>
-                        <td>{{ item.get_text_rarity }}</td>
-                        <td>{{ item.weight }}Kg</td>
-                        <td>{{ item.cost_copper }}MR</td>
+                        <th>#ID</th>
+                        <th>Nome</th>
+                        <th>Rarità</th>
+                        <th>Peso (KG)</th>
+                        <th>Costo (MR)</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <p>Nessun oggetto trovato.</p>
-    {% endif %}
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr>
+                            <td>
+                                <label><input type="checkbox" name="item_selected" value="{{ item.item_id }}">{{ item.item_id }}</label>
+                            </td>
+                            <td style="text-align: left; width: 100%;"><a href="/dnd5e/items/{{ item.item_id }}">{{ item.name }}</a></td>
+                            <td>{{ item.get_text_rarity }}</td>
+                            <td>{{ item.weight }}Kg</td>
+                            <td>{{ item.cost_copper }}MR</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Nessun oggetto trovato.</p>
+        {% endif %}
+    </form>
 {% endblock %}

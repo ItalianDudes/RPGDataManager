@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <link rel="shortcut icon" type="image/png" href="{% static 'dnd5e/favicon.ico' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'dnd5e/style.css' %}"/>
-        {% block title %}
+        {% block head %}
             <title>D&D5E Data Manager</title>
         {% endblock %}
     </head>
@@ -17,8 +17,8 @@
         {% endif %}
         {% block content %}
         {% endblock %}
-        <footer>
-            <p>Progettato e scritto da Hacker6329</p>
+        <footer class="dnd5-footer">
+            <p>Progettato e scritto da <a href="https://github.com/Hacker6329">Hacker6329</a>, <a href="https://github.com/ItalianDudes">ItalianDudes</a></p>
         </footer>
     </body>
 </html>
