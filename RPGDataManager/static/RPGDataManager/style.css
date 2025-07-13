@@ -1,0 +1,33 @@
+body {
+    background-color: #121212;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+}
+
+/* Intestazioni */
+h1, h2, h3, h4, h5, h6 {
+    color: #ffffff;
+}
+
+/* Link */
+a {
+    color: #90caf9;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* Contenitori */
+.container {
+    max-width: 800px;
+    padding: 1em;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+.main-footer {
+    text-align: center;
+    color: gray;
+    font-size: 12px;
+}

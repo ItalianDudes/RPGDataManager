@@ -1,13 +1,12 @@
 {% extends "dnd5e/item.html" %}
 {% load static %}
 {% block category_fields %}
-    {{ form.ca_effect }}
-    {{ form.life_effect }}
-    {{ form.life_effect_perc }}
-    {{ form.load_effect }}
-    {{ form.load_effect_perc }}
+    <label>Effetto CA:</label>{{ form.ca_effect }}
+    <label>Effetto Vita:</label>{{ form.life_effect }}
+    <label>Effetto Vita%:</label>{{ form.life_effect_perc }}
+    <label>Effetto Carico:</label>{{ form.load_effect }}
+    <label>Effetto Carico%:</label>{{ form.load_effect_perc }}
     {% block equipment_fields %}
     {% endblock %}
-    {{ form.other_effects }}
-    {{ form.description }}
+    <label>Altri Effetti:</label>{{ form.other_effects }}
 {% endblock %}

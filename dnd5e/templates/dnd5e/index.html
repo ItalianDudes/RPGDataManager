@@ -1,7 +1,15 @@
 {% extends "dnd5e/_base.html" %}
 {% load static %}
 {% block content %}
+    <div style="text-align: center;font-size: 24px;">
+        <h1>D&D 5E DATA MANAGER</h1>
+        <img src="{% static 'dnd5e/logo.png' %}" alt="Logo" width="300" height="300"/>
+    </div>
+    <p>Benvenuto nel D&D 5E Data Manager!</p>
+    <p>In questa sezione del sito potrai visualizzare tutte le informazioni relative alle campagne di Hacker6329 relative al TRPG D&D 5E.</p>
+    <p>Pagine Disponibili:</p>
     <ul>
         <li><a href="/dnd5e/items/">Oggetti</a></li>
+        <li><a href="/dnd5e/">Entità [WIP]</a></li>
     </ul>
 {% endblock %}

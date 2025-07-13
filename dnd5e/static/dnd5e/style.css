@@ -1,10 +1,160 @@
-/* PROPERTIES OVERRIDE */
-table, th, td {
-    border: 1px solid;
+/* FONT IMPORT */
+@import url('https://fonts.googleapis.com/css2?family=Girassol&display=swap');
+
+/* GENERIC HTML DECORATION */
+body {
+    margin: 0;
+    font-family: 'Girassol', cursive;
+    background-color: #1a1a1d;
+    color: #f0e6d2;
+    line-height: 1.6;
+    padding: 20px;
+}
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    background-color: #262626;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+}
+h1, h2, h3 {
+    color: #d62828;
+    text-shadow: 1px 1px 2px #000;
+}
+a {
+    color: #ffb703;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+button {
+    background-color: #6a040f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-family: 'Girassol', cursive;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #9d0208;
+}
+
+/* TABLE DECORATION */
+table {
+    width: 100%;
     border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-color: #2c2c2c;
+    color: #f0e6d2;
+    font-family: 'Girassol', cursive;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    border: 2px solid #d62828;
+    background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png');
+    background-repeat: repeat;
+}
+th, td {
+    padding: 12px 15px;
     text-align: left;
-    white-space: nowrap;
-    padding: 5px;
+    border-bottom: 1px solid #444;
+}
+th {
+    background-color: #6a040f;
+    color: #ffb703;
+    text-shadow: 1px 1px 1px #000;
+}
+tr {
+    vertical-align: middle;
+}
+tr:hover {
+    background-color: #3d3d3d;
+}
+th:first-child,
+td:first-child {
+  border-top-left-radius: 8px;
+}
+
+th:last-child,
+td:last-child {
+  border-top-right-radius: 8px;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 8px;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: 8px;
+}
+
+/* INPUT DECORATION */
+form > * {
+    margin-bottom: 8px;
+}
+button {
+    margin-right: 5px;
+}
+input[type="checkbox"] {
+    accent-color: #d62828;
+    background-color: #2c2c2c;
+    border: 2px solid #6a040f;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+input[type="checkbox"]:checked {
+    box-shadow: 0 0 5px #ffb703;
+}
+input[type="checkbox"]:hover {
+    border-color: #ffb703;
+    transform: scale(1.1);
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #2c2c2c;
+  color: #f0e6d2;
+  border: 2px solid #6a040f;
+  border-radius: 6px;
+  font-family: 'Girassol', cursive;
+  font-size: 1rem;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.3);
+  transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+input[type="text"]:focus,
+textarea:focus {
+  border-color: #ffb703;
+  outline: none;
+}
+select {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: #2c2c2c;
+  color: #f0e6d2;
+  border: 2px solid #6a040f;
+  border-radius: 6px;
+  font-family: 'Girassol', cursive;
+  font-size: 1rem;
+  box-shadow: inset 0 0 5px rgba(255, 0, 0, 0.3);
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg fill='gold' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  cursor: pointer;
+}
+select:focus {
+  border-color: #ffb703;
+  outline: none;
 }
 
 /* CLASS DEFINITIONS */
@@ -13,17 +163,45 @@ table, th, td {
     gap: 0.3rem;
 }
 .alert {
-    text-align: center;
-    font-weight: bold;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  font-family: 'Girassol', cursive;
+  font-size: 1.1rem;
+  color: #f0e6d2;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+  border: 2px solid transparent;
 }
 .alert-success {
-    color: green;
+  background-color: #1a3c2c;
+  border-color: #38b000;
+  color: #b7f4c9;
+}
+.alert-warning {
+  background-color: #4a3b18;
+  border-color: #ffb703;
+  color: #fff4c2;
 }
 .alert-error {
-    color: red;
+  background-color: #6a040f;
+  border-color: #d62828;
+  color: #f0e6d2;
+}
+.alert {
+  animation: fadeInDrop 0.6s ease-in-out;
+}
+@keyframes fadeInDrop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 .dnd5-footer {
     text-align: center;
     color: gray;
-    font-size: 10px;
+    font-size: 12px;
 }

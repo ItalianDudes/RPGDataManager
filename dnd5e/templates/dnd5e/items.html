@@ -43,10 +43,10 @@
                 <tbody>
                     {% for item in items %}
                         <tr>
-                            <td>
+                            <td style="width: 10%;">
                                 <label><input type="checkbox" name="item_selected" value="{{ item.item_id }}">{{ item.item_id }}</label>
                             </td>
-                            <td style="text-align: left; width: 100%;"><a href="/dnd5e/items/{{ item.item_id }}">{{ item.name }}</a></td>
+                            <td style="width: 70%;"><a href="/dnd5e/items/{{ item.item_id }}">{{ item.name }}</a></td>
                             <td>{{ item.get_text_rarity }}</td>
                             <td>{{ item.weight }}Kg</td>
                             <td>{{ item.cost_copper }}MR</td>

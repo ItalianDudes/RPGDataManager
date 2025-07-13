@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'dnd5e',
-    'tester'
+    'RPGDataManager',
+    'dnd5e'
 ]
 
 MIDDLEWARE = [
@@ -64,7 +64,6 @@ TEMPLATES = [
         'DIRS': [
             BASE_DIR / 'RPGDataManager/templates',
             BASE_DIR / 'dnd5e/templates',
-            BASE_DIR / 'tester/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

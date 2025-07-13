@@ -1,10 +1,10 @@
 {% extends "dnd5e/item.html" %}
 {% load static %}
 {% block category_fields %}
-    {{ form.level }}
-    {{ form.spell_type }}
-    {{ form.cast_time }}
-    {{ form.range }}
-    {{ form.components }}
-    {{ form.duration }}
+    <label>Livello Incantesimo:</label>{{ form.level }}
+    <label>Tipo Incantesimo:</label>{{ form.spell_type }}
+    <label>Tempo di Lancio:</label>{{ form.cast_time }}
+    <label>Portata:</label>{{ form.range }}
+    <label>Componenti:</label>{{ form.components }}
+    <label>Durata:</label>{{ form.duration }}
 {% endblock %}

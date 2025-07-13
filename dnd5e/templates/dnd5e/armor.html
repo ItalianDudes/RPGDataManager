@@ -1,6 +1,6 @@
 {% extends "dnd5e/_equipment.html" %}
 {% load static %}
 {% block equipment_fields %}
-    {{ form.armor_slot }}
-    {{ form.weight_category }}
+    <label>Slot:</label>{{ form.armor_slot }}
+    <label>Categoria Peso:</label>{{ form.weight_category }}
 {% endblock %}

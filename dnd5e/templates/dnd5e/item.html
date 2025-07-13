@@ -5,13 +5,13 @@
 {% endblock %}
 {% block content %}
     <form method="post" class="editor-item-form">
-        {{ form.name }}
-        {{ form.rarity }}
-        {{ form.weight }}
-        {{ form.cost_copper }}
-        {{ form.description }}
+        <label>Nome:</label>{{ form.name }}
+        <label>Rarità:</label>{{ form.rarity }}
+        <label>Peso (KG):</label>{{ form.weight }}
+        <label>Costo (MR):</label>{{ form.cost_copper }}
         {% block category_fields %}
         {% endblock %}
+        <label>Descrizione:</label>{{ form.description }}
         {% csrf_token %}
         <br/>
         <button type="button" onclick="window.location.href='/dnd5e/items/'">INDIETRO</button>
